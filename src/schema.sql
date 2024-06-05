@@ -1,19 +1,19 @@
 -- Table for storing student information
 CREATE TABLE students (
-    student_id INTEGER PRIMARY KEY,
+    student_id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_name TEXT NOT NULL
 );
 
 -- Table for storing courses
 CREATE TABLE courses (
-    course_id INTEGER PRIMARY KEY,
+    course_id INTEGER PRIMARY KEY AUTOINCREMENT,
     course_name TEXT NOT NULL
 );
 
 -- Table for storing grades
 CREATE TABLE grades (
-    student_id INTEGER,
-    course_id INTEGER,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
     grade INTEGER,
     PRIMARY KEY (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES students(student_id),
@@ -29,8 +29,8 @@ CREATE TABLE elective_courses (
 
 -- Table for storing taken courses
 CREATE TABLE taken_courses (
-    student_id INTEGER,
-    course_id INTEGER,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
     course_name TEXT NOT NULL,
     elective_type TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -41,8 +41,8 @@ CREATE TABLE taken_courses (
 
 -- Table for storing selected courses
 CREATE TABLE selected_courses (
-    student_id INTEGER,
-    course_id INTEGER,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
     course_name TEXT NOT NULL,
     elective_type TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -59,28 +59,28 @@ CREATE INDEX idx_course_id_taken_courses ON taken_courses (course_id);
 
 -- Insert additional dummy data into students table
 INSERT INTO students (student_id, student_name) VALUES
-(000, 'Test'),
-(703, 'Alice Johnson'),
-(704, 'Bob Brown'),
-(705, 'Charlie Davis'),
-(706, 'Kenny Lu'),
-(707, 'Ben Al'),
-(708, 'Cate Smith'),
-(709, 'Tom Lin'),
-(710, 'Justin Lee');
+(NULL, 'Test'),
+(NULL, 'Alice Johnson'),
+(NULL, 'Bob Brown'),
+(NULL, 'Charlie Davis'),
+(NULL, 'Kenny Lu'),
+(NULL, 'Ben Al'),
+(NULL, 'Cate Smith'),
+(NULL, 'Tom Lin'),
+(NULL, 'Justin Lee');
 
 -- Insert additional dummy data into courses table
 INSERT INTO courses (course_id, course_name) VALUES
-(101, 'Introduction to Art'),
-(102, 'History of Art'),
-(103, 'Creative Writing'),
-(104, 'Music Theory'),
-(105, 'Fine Arts'),
-(106, 'Dance'),
-(201, 'Advanced Mathematics'),
-(202, 'Physics'),
-(203, 'Introduction to Programming'),
-(204, 'Environmental Science');
+(NULL, 'Introduction to Art'),
+(NULL, 'History of Art'),
+(NULL, 'Creative Writing'),
+(NULL, 'Music Theory'),
+(NULL, 'Fine Arts'),
+(NULL, 'Dance'),
+(NULL, 'Advanced Mathematics'),
+(NULL, 'Physics'),
+(NULL, 'Introduction to Programming'),
+(NULL, 'Environmental Science');
 
 -- Insert additional dummy data into elective_courses table
 INSERT INTO elective_courses (course_id, course_name, required_grade) VALUES

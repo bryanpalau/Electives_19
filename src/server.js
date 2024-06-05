@@ -11,17 +11,16 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve the index.html file
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Fetch courses for a specific elective type
 app.get('/api/courses', (req, res) => {
   const studentId = req.query.studentId;
   const electiveType = req.query.electiveType;
-  const electiveTable = electiveType === 'elective_1' ? 'elective_1' : 'elective_2';
 
   db.all(
     `SELECT course_id, course_name, required_grade 
-     FROM ${electiveTable}`,
+     FROM elective_courses`,
     (err, courses) => {
       if (err) {
         console.error('Error fetching courses:', err.message);
@@ -153,11 +152,8 @@ app.post('/api/select-course', (req, res) => {
         return res.status(400).json({ error: 'Course already taken' });
       }
 
-      // Determine which elective table to query for the required grade
-      const electiveTable = electiveType === 'elective_1' ? 'elective_1' : 'elective_2';
-
-      // Fetch the required grade for the course from the appropriate elective table
-      db.get(`SELECT required_grade FROM ${electiveTable} WHERE course_id = ?`, [courseId], (err, courseRow) => {
+      // Fetch the required grade for the course from the elective_courses table
+      db.get(`SELECT required_grade FROM elective_courses WHERE course_id = ?`, [courseId], (err, courseRow) => {
         if (err) {
           console.error('Error fetching course:', err.message);
           return res.status(500).json({ error: 'Internal Server Error' });
@@ -166,7 +162,7 @@ app.post('/api/select-course', (req, res) => {
         const requiredGrade = courseRow.required_grade;
         if (requiredGrade === null) {
           // If no grade requirement, proceed to select the course
-          insertSelectedCourse(studentId, courseId, electiveType, electiveTable, res);
+          insertSelectedCourse(studentId, courseId, electiveType, res);
         } else {
           // Check if the student meets the prerequisite grade
           db.get(`SELECT grade FROM grades WHERE student_id = ? AND course_id = ?`, [studentId, courseId], (err, gradeRow) => {
@@ -182,7 +178,7 @@ app.post('/api/select-course', (req, res) => {
             }
 
             // Proceed to select the course if not already selected, not already taken, and meets the prerequisite grade
-            insertSelectedCourse(studentId, courseId, electiveType, electiveTable, res);
+            insertSelectedCourse(studentId, courseId, electiveType, res);
           });
         }
       });
@@ -191,11 +187,11 @@ app.post('/api/select-course', (req, res) => {
 });
 
 // Function to insert selected course into the database
-function insertSelectedCourse(studentId, courseId, electiveType, electiveTable, res) {
+function insertSelectedCourse(studentId, courseId, electiveType, res) {
   // Adjust the time zone here
   const timestamp = new Date().toLocaleString("en-US", { timeZone: "Asia/Taipei" });
   db.run(
-    `INSERT INTO selected_courses (student_id, course_id, course_name, elective_type, timestamp) VALUES (?, ?, (SELECT course_name FROM ${electiveTable} WHERE course_id = ?), ?, ?)`,
+    `INSERT INTO selected_courses (student_id, course_id, course_name, elective_type, timestamp) VALUES (?, ?, (SELECT course_name FROM elective_courses WHERE course_id = ?), ?, ?)`,
     [studentId, courseId, courseId, electiveType, timestamp],
     (err) => {
       if (err) {
