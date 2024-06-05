@@ -70,11 +70,12 @@
                     fetch(`/api/students/${studentId}`)
                         .then(response => response.json())
                         .then(data => {
-                            console.log('Student ID verification response:', data);
+                            console.log('Student ID verification response:', data); // Log response
                             if (data.exists) {
                                 alert('Success');
                                 verifyContainer.style.display = 'none';
                                 formContainer.classList.remove('hidden');
+                                navigationButtons.classList.remove('hidden');
                                 // Load courses for elective sets
                                 loadCourses(studentId, 'elective_1', 0);
                                 loadCourses(studentId, 'elective_2', 1);
@@ -89,7 +90,7 @@
             });
 
             function createForm(electiveType, courses, index) {
-                console.log(`Creating form for ${electiveType}`);
+                console.log(`Creating form for ${electiveType}`); // Log form creation
 
                 const form = document.createElement('form');
                 form.id = `form-${electiveType}`;
