@@ -59,15 +59,15 @@ CREATE INDEX idx_course_id_taken_courses ON taken_courses (course_id);
 
 -- Insert additional dummy data into students table
 INSERT INTO students (student_id, student_name) VALUES
-(NULL, 'Test'),
-(NULL, 'Alice Johnson'),
-(NULL, 'Bob Brown'),
-(NULL, 'Charlie Davis'),
-(NULL, 'Kenny Lu'),
-(NULL, 'Ben Al'),
-(NULL, 'Cate Smith'),
-(NULL, 'Tom Lin'),
-(NULL, 'Justin Lee');
+(000, 'Test'),
+(701, 'Alice Johnson'),
+(702, 'Bob Brown'),
+(703, 'Charlie Davis'),
+(704, 'Kenny Lu'),
+(705, 'Ben Al'),
+(706, 'Cate Smith'),
+(707, 'Tom Lin'),
+(708, 'Justin Lee');
 
 -- Insert additional dummy data into courses table
 INSERT INTO courses (course_id, course_name) VALUES
@@ -115,4 +115,4 @@ INSERT INTO grades (student_id, course_id, grade) VALUES
 
 -- Insert additional dummy data into selected_courses table
 INSERT INTO selected_courses (student_id, course_id, course_name, elective_type) VALUES
-(000, 103, 'Creative Writing', 'elective_1');
+(000, 100, 'SDG', 'elective_100');

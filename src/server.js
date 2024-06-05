@@ -72,7 +72,7 @@ app.get('/api/courses', (req, res) => {
                     if (
                       takenCourseIds.includes(course.course_id) ||
                       (course.required_grade && (!studentGrade || studentGrade < course.required_grade)) ||
-                      selectedCount >= 16
+                      selectedCount >= 4
                     ) {
                       course.disabled = true;
                     } else {
