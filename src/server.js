@@ -10,7 +10,7 @@ const db = new sqlite3.Database(path.resolve(__dirname, 'schema.db'));
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve the index.html file
+// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Fetch courses for a specific elective type
